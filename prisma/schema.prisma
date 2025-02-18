@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  createdAt DateTime @default(now())
+  events    Event[]
+}
+
+model Event {
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  expiresAt   DateTime
+  sheetId     String
+  sheetName   String
+  createdAt   DateTime @default(now())
+  userId      String
+  createdBy   User     @relation(fields: [userId], references: [id])
+}
+
+model SmtpConfig {
+  id        String     @id @default(cuid())
+  service   String
+  user      String
+  pass      String
+  host      String
+  port      Int
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  emailLogs EmailLog[]
+}
+
+model EmailLog {
+  id           String     @id @default(cuid())
+  email        String
+  status       String
+  errorMsg     String?
+  timestamp    DateTime   @default(now())
+  smtpConfigId String
+  smtpConfig   SmtpConfig @relation(fields: [smtpConfigId], references: [id])
+}
