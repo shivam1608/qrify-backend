@@ -52,7 +52,7 @@ export async function generateQRCodes(c: Context) {
         const columnValues: Record<number, Set<string>> = {}; // Track values in each column
 
         // Loop through each row to gather values for each column
-        for (let rowIndex = 1; rowIndex < sheetData.length; rowIndex++) {
+        for (let rowIndex = 0; rowIndex < sheetData.length; rowIndex++) {
             const row = sheetData[rowIndex];
             row.forEach((cell, columnIndex) => {
                 if (!columnValues[columnIndex]) {
@@ -88,7 +88,7 @@ export async function generateQRCodes(c: Context) {
         const qrCodes: { email?: string; fileName: string; filePath: string }[] = [];
 
         // Generate QR codes for each row, using only unique columns
-        for (let i = 1; i < sheetData.length; i++) {
+        for (let i = 0; i < sheetData.length; i++) {
             const row = sheetData[i];
             const uniqueValues = uniqueColumns.map((colIndex) => row[colIndex]);
 
