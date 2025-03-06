@@ -286,11 +286,12 @@ export async function searchRows(c: Context) {
 
     // Fetch the event from the database
     const event = await prisma.event.findUnique({
-      where: { id: eventId },
+      where: { id: eventId, },
       select: {
+        name: true,
         sheetId: true,
         sheetName: true
-      }
+      },
     });
 
     if (!event) {
@@ -325,6 +326,7 @@ export async function searchRows(c: Context) {
 
     // Return the response with matching rows and their row numbers
     if (matchingRows.length > 0) {
+       matchingRows[0].rowData.push(event.name);
       return c.json({
         message: 'Rows found successfully',
         matchingRows
